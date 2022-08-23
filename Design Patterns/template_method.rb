@@ -9,8 +9,8 @@ class Report
   end
 
   # what the template method does
-  # output a title
-  # output the body
+  # 1 - output a title
+  # 2 - output the body
   def output_report
     output_title
     output_body
@@ -18,7 +18,7 @@ class Report
 
   def output_title
     raise NotImplementedError, 'output_title is abstract'
-  end 
+  end
 
   def output_body
     @patterns.each do |pattern|
