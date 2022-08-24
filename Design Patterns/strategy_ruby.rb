@@ -4,7 +4,7 @@
 
 # So now we don’t have a class with a method to call, but just a Proc to call.
 
-HTMLFormatter = lambda do |context|
+HTML_FORMATTER = lambda do |context|
 	puts("<title>#{context.title}</title>")
 	context.books.each do |book|
 		puts("<item>#{book}</item>")
@@ -32,5 +32,21 @@ class Report
 	end
 end
 
-report = Report.new(&HTMLFormatter)
+report = Report.new(&HTML_FORMATTER)
 report.output_report
+
+# creating our PlainTextFormatter on the fly
+# that is one advantage we have with the Proc-based implementaion
+report2 = Report.new do |context|
+  puts(context.title)
+	context.books.each do |book|
+		puts(book)
+	end
+end
+report2.output_report
+
+# What have we achieved?
+
+# In the beginning we had to use a base Strategy class, some concrete strategies and a context.
+
+# Now we’re only using a context and some procs instead of concrete classes.
