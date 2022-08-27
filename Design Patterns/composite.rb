@@ -1,9 +1,10 @@
 
 #  This is a common base class for our subtasks
 class Task
-  attr_reader :name
+  attr_accessor :name, :parent
   def initialize(name)
     @name = name
+    @parent = nil
   end
 
   def get_time_required
@@ -11,7 +12,7 @@ class Task
   end
 end
 
-# our subtasks
+# our subtasks (leaf)
 # AddDryIngredientsTask MixTask AddLiquidIngredientsTask
 class AddDryIngredientsTask < Task
   def initialize
@@ -43,18 +44,31 @@ class AddLiquidIngredientsTask < Task
   end
 end
 
-# a composite task
-class MakeBatterTask < Task
-  def initialize
-    super('Make batter')
+# factoring out the code that manages substasks
+class Composite < Task
+  def initialize(name)
+    super(name)
     @subtasks = []
-    add_subtask( AddDryIngredientsTask.new )
-    add_subtask( MixTask.new )
-    add_subtask( AddLiquidIngredientsTask.new )
   end
 
-  def add_subtask(task)
+  def << (task)
+    task.parent = self
     @subtasks << task
+    log(task)
+    task
+  end
+
+  def [](task)
+    @subtasks[task]
+  end
+
+  def []=(index, task)
+    @subtasks[index] = task
+  end
+
+  def log(task)
+    puts("[NEW TASK]: , #{task} #{self}")
+    puts("[all subtasks #{@subtasks.length}], #{@subtasks}")
   end
 
   def remove_subtask(task)
@@ -63,10 +77,23 @@ class MakeBatterTask < Task
 
   def get_time_required
     time = 0.0
-    puts(@subtasks)
+    puts("subtasks length :", @subtasks.length)
     @subtasks.each { |sub_task| time += sub_task.get_time_required }
     time
   end
 end
 
-puts MakeBatterTask.new.get_time_required
+# a composite task
+class MakeBatterTask < Composite
+  def initialize(name)
+    super(name)
+    # add_substask replaced by << method in the superclass
+    # add_subtask( AddDryIngredientsTask.new )
+    # add_subtask( AddLiquidIngredientsTask.new )
+  end
+end
+
+make_batter = MakeBatterTask.new('Make batter')
+make_batter << MixTask.new
+make_batter << AddDryIngredientsTask.new
+puts "second subtask in make batter #{make_batter[1]}"
