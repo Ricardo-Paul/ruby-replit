@@ -59,7 +59,9 @@ class Composite < Task
   end
 
   def [](task)
-    @subtasks[task]
+    if task.kind_of? Integer
+      @subtasks[task]
+    end
   end
 
   def []=(index, task)
