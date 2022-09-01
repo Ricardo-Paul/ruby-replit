@@ -1,6 +1,6 @@
 class ArrayIterator
   def initialize(array)
-    @array = array
+    @array = Array.new(array)
     @index = 0
   end
 
@@ -20,7 +20,7 @@ class ArrayIterator
 end
 
 patterns = ['composite', 'iterator', 'observer']
-iterator = ArrayIterator.new('Ricardo')
+iterator = ArrayIterator.new(patterns)
 
 while iterator.has_next?
   puts iterator.next_item
