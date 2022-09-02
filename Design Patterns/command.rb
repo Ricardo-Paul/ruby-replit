@@ -1,9 +1,10 @@
 class Button
-	def initialize(command)
-		@command = command
+  # expecting a code block
+	def initialize(&block)
+		@command = block
 	end
 	def execute
-		@command.execute
+		@command.call if @command
 	end
 end
 
@@ -14,5 +15,12 @@ class SaveCommand
 	end
 end
 
-save = Button.new(SaveCommand.new)
+# Switching to proc-based command
+# a proc object
+SAVE_COMMAND = lambda do
+  puts('running save logic - code block')
+end
+
+# convert the proc object to a codeblock
+save = Button.new(&SAVE_COMMAND)
 save.execute
