@@ -17,8 +17,6 @@ class Encrypter
   end
 end
 
-
-
 class StringIOAdapter
   def initialize(string)
     @string = string
