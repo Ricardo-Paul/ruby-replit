@@ -87,7 +87,6 @@ create_file = CreateFile.new('./Design Patterns/text.txt', 'Gang of Four')
 copy_file = CopyFile.new('./Design Patterns/text.txt', './Design Patterns/contents.txt')
 delete_file = DeleteFile.new('./Design Patterns/text.txt')
 
-
 # execute all commands through the composite object
 cmds = CompositeCommand.new
 cmds.add_commands([create_file, copy_file, delete_file])
