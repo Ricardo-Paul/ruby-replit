@@ -35,8 +35,9 @@ class AccountProtectionProxy
 end
 
 class VirtualAccountProxy
-  def initialize(starting_balance = 0)
+  def initialize(starting_balance = 0, &creation_block)
     @starting_balance = starting_balance
+    @creation_block = creation_block
   end
 
   # delay the subject instantiation until the client needs it
@@ -51,7 +52,7 @@ class VirtualAccountProxy
   end
 
   def subject
-    @subject || (@subject = BankAccount.new(@starting_balance))
+    @subject || (@subject = @creation_block.call)
   end
 
 end
@@ -68,6 +69,6 @@ accProxy.deposit(1200)
 puts accProxy.balance
 
 # virtual proxy
-accVirtProxy = VirtualAccountProxy.new(0)
+accVirtProxy = VirtualAccountProxy.new(0) { BankAccount.new(@starting_balance) }
 accVirtProxy.deposit(3000)
 puts accVirtProxy.balance
