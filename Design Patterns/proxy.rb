@@ -10,7 +10,7 @@ class BankAccount
 	end
 end
 
-class BankAccountProxy
+class AccountProtectionProxy
 	def initialize(real_object, username)
 		@real_object = real_object
     @username = username
@@ -34,13 +34,40 @@ class BankAccountProxy
   end
 end
 
+class VirtualAccountProxy
+  def initialize(starting_balance = 0)
+    @starting_balance = starting_balance
+  end
+
+  # delay the subject instantiation until the client needs it
+  def deposit(amount)
+    s = subject
+    s.deposit(amount)
+  end
+
+  def balance
+    s = subject
+    s.balance
+  end
+
+  def subject
+    @subject || (@subject = BankAccount.new(@starting_balance))
+  end
+
+end
+
 # client code
+# simple proxy
 acc = BankAccount.new
 acc.deposit(8000)
 puts acc.balance
 
-accProxy = BankAccountProxy.new(acc, "runner")
+# protection proxy
+accProxy = AccountProtectionProxy.new(acc, "runner")
 accProxy.deposit(1200)
 puts accProxy.balance
 
-puts Etc.getlogin
+# virtual proxy
+accVirtProxy = VirtualAccountProxy.new(0)
+accVirtProxy.deposit(3000)
+puts accVirtProxy.balance

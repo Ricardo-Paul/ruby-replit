@@ -5,7 +5,7 @@ module Reepay
     module SchemaFactory
 
       def schema 
-        @schema ||= ::Reepay::Schema.new
+        @schema || (@schema = ::Reepay::Schema.new)
       end
 
       def define_attribute(name, type)
@@ -23,5 +23,3 @@ module Reepay
     end
   end
 end
-
-# Goal is to able to write this from scrath, crazy
