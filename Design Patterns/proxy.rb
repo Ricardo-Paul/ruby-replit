@@ -6,6 +6,7 @@ class BankAccount
 		@balance = starting_bal
 	end
 	def deposit(amount)
+    puts "__callee__: #{__callee__}"
 		@balance += amount
 	end
 end
@@ -32,27 +33,33 @@ class AccountProtectionProxy
       raise "Permission error: cannot perform #{action}"
     end
   end
+
 end
 
 class VirtualAccountProxy
-  def initialize(starting_balance = 0, &creation_block)
+  def initialize(starting_balance = 0)
     @starting_balance = starting_balance
-    @creation_block = creation_block
   end
 
   # delay the subject instantiation until the client needs it
-  def deposit(amount)
-    s = subject
-    s.deposit(amount)
-  end
+  # def deposit(amount)
+  #   s = subject
+  #   s.deposit(amount)
+  # end
 
-  def balance
+  # def balance
+  #   s = subject
+  #   s.balance
+  # end
+
+  def method_missing(name, *args)
     s = subject
-    s.balance
+    s.send(name, *args)
+    # raise NoMethodError, "Oops #{name} not found"
   end
 
   def subject
-    @subject || (@subject = @creation_block.call)
+    @subject || (@subject = BankAccount.new(@starting_balance))
   end
 
 end
@@ -69,6 +76,6 @@ accProxy.deposit(1200)
 puts accProxy.balance
 
 # virtual proxy
-accVirtProxy = VirtualAccountProxy.new(0) { BankAccount.new(@starting_balance) }
+accVirtProxy = VirtualAccountProxy.new(0)
 accVirtProxy.deposit(3000)
 puts accVirtProxy.balance
