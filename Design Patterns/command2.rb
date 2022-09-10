@@ -1,5 +1,5 @@
 # Use the command pattern to design an installation software
-# Installation program usually does different things on a user's system
+# Installation programs usually do different things on a user's system
 # The goal is to be able to tell the user what we're doing on their system during each step
 # We can use a composite object to contain all of our commands
 # The composite command object will be our sender
