@@ -73,5 +73,12 @@ numbering_writer.write_line("Decorator Pattern")
 
 # checksumming writer
 checksumming_writer = ChecksummingWriter.new(simple_writer)
-checksumming_writer.write_line("Hello World")
+checksumming_writer.write_line("Hello World") # checksum of string 'Hello World': 28
 puts checksumming_writer.checksum
+
+# now we can get the checksum of a numbered line 
+check = ChecksummingWriter.new(
+  NumberingWriter.new(simple_writer)
+)
+check.write_line("AB")
+puts check.checksum # checksum of string 'AB': 131
