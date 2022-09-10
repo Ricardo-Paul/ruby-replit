@@ -1,2 +1,2 @@
-Plain text
-2022-09-10 20:13:32 +0000: Line with timestamp
+1 Adapter Pattern
+2 Command Pattern
