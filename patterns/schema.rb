@@ -2,7 +2,6 @@
 # makes Reepay::Schema::SchemaFactory available in this file
 # does not matter where we require it
 
-# the magic lives here
 
 module Reepay
   class Schema
