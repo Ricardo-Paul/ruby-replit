@@ -29,3 +29,5 @@ def checksum (s)
   sum
 end
 puts checksum("AB")
+
+# Purchase lifecycle
