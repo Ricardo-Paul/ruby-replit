@@ -60,14 +60,19 @@ end
 # Creator - Pond
 class Pond
   attr_reader :ducks
-  def initialize(ducks_number)
+  def initialize(animal_number, animal_class)
+    @animal_class = animal_class
     names = [:jane, :calix, :ally] #TODO move to subclass
-    raise "Too many ducks" if ducks_number > names.length
+    raise "Too many ducks" if animal_number > names.length
     @animals = []
-    ducks_number.times do |i|
+    animal_number.times do |i|
       animal = new_animal("#{names[i]}")
       @animals << animal
     end
+  end
+
+  def new_animal(name)
+    @animal_class.new(name)
   end
 
   def simulate_one_day
@@ -95,11 +100,15 @@ class FrogPond < Pond
   end
 end
 
-duck_pond = DuckPond.new(3)
+# duck_pond = DuckPond.new(3)
+# duck_pond.simulate_one_day
+
+# removes the need of a subclass to pick the right class
+duck_pond = Pond.new(3, Duck)
 duck_pond.simulate_one_day
 
-frog_pond = FrogPond.new(3)
-frog_pond.simulate_one_day
+# frog_pond = FrogPond.new(3)
+# frog_pond.simulate_one_day
 
 puts "---- our frog #{frog = "Fruggy"}----"
 [:eat, :speak, :sleep].each { |act| Frog.new(frog).send(act) }
