@@ -19,21 +19,35 @@ end
 class Pond
   attr_reader :ducks
   def initialize(ducks_number)
-    names = [:jane, :calix, :ally]
+    names = [:jane, :calix, :ally] #TODO move to subclass
     raise "Too many ducks" if ducks_number > names.length
-    @ducks = []
+    @animals = []
     ducks_number.times do |i|
-        duck = Duck.new("#{names[i]}")
-        @ducks << duck
+        animal = new_animal("#{names[i]}")
+        @animals << animal
     end
   end
 
   def simulate_one_day
-    @ducks.each do |duck|
-      duck.eat
-      duck.speak
-      duck.sleep
+    @animals.each do |animal|
+      animal.eat
+      animal.speak
+      animal.sleep
     end
+  end
+end
+
+# refactor: DuckPond subclass to pick the right class
+# it's only implementing `new_animal` to provide the Duck class to the superclass
+class DuckPond < Pond
+  def new_animal(name)
+    Duck.new(name)
+  end
+end
+
+class FrogPond < Pond
+  def new_animal(name)
+    Frog.new(name)
   end
 end
 
@@ -54,8 +68,12 @@ class Frog
   end
 end
 
-duck_pond = Pond.new(3)
+duck_pond = DuckPond.new(3)
 duck_pond.simulate_one_day
+
+frog_pond = FrogPond.new(3)
+frog_pond.simulate_one_day
 
 puts "---- our frog #{frog = "Fruggy"}----"
 [:eat, :speak, :sleep].each { |act| Frog.new(frog).send(act) }
+
