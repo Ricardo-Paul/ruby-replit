@@ -37,5 +37,25 @@ class Pond
   end
 end
 
+class Frog
+  def initialize(name)
+    @name = name
+  end
+  def eat
+    puts "#{@name} is eating"
+  end
+
+  def speak
+    puts "#{@name} says Croaaaak croaaak!"
+  end
+
+  def sleep
+    puts "#{@name} does not sleep - Croaaking all night"
+  end
+end
+
 duck_pond = Pond.new(3)
 duck_pond.simulate_one_day
+
+puts "---- our frog #{frog = "Fruggy"}----"
+[:eat, :speak, :sleep].each { |act| Frog.new(frog).send(act) }
