@@ -18,22 +18,40 @@ end
 
 # concrete factories that produce compatible products
 # a pond can have frogs and algae
-class PondOrganismFactory
-  def new_animal(name)
-    Frog.new
-  end
-  def new_plant(name)
-    Algae.new
-  end
-end
+
+# class PondOrganismFactory
+#   def new_animal(name)
+#     Frog.new
+#   end
+#   def new_plant(name)
+#     Algae.new
+#   end
+# end
 
 #  a jungle can have tigers and trees
-class JungleOrganismFactory
-  def new_animal(name)
-    Tiger.new
+
+# class JungleOrganismFactory
+#   def new_animal(name)
+#     Tiger.new
+#   end
+#   def new_plant(name)
+#     Tree.new
+#   end
+# end
+
+# combine concrete factories
+class OrganismFactory
+  def initialize(animal_class, plant_class)
+    @animal_class = animal_class
+    @plant_class = plant_class
   end
+
+  def new_animal(name)
+    @animal_class.new
+  end
+
   def new_plant(name)
-    Tree.new
+    @plant_class.new
   end
 end
 
@@ -55,4 +73,5 @@ class Habitat
   end
 end
 
-jungle = Habitat.new(2, 3, JungleOrganismFactory.new)
+# jungle = Habitat.new(2, 3, JungleOrganismFactory.new)
+jungle = Habitat.new(2, 3, OrganismFactory.new(Tiger, Tree))
